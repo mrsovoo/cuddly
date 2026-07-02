@@ -1,7 +1,7 @@
 {
   "name": "cuddly-ai",
   "version": "1.0.0",
-  "description": "Cuddly AI - Premium AI Chat Application with SQLite Database",
+  "description": "Cuddly AI - Premium AI Workspace",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -9,8 +9,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "sqlite3": "^5.1.6"
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
