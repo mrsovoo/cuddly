@@ -1,535 +1,391 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>yourHR 2.0 — Admin va HR Panel</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="static/css/app.css" />
-
+    <title>Cuddly AI v1.0</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 </head>
 <body>
+    <div class="app" id="app">
+        <!-- AUTH SCREEN -->
+        <div class="auth-screen" id="authScreen">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-logo">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="6" y="6" width="36" height="36" rx="12" fill="#1a1a1a"/>
+                            <path d="M15 18L21 24L15 30" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M33 30L27 24L33 18" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="24" cy="24" r="3" fill="white"/>
+                        </svg>
+                        <h1>Cuddly AI</h1>
+                        <p>Premium AI Workspace</p>
+                    </div>
 
-    <!-- ===== LOGIN ===== -->
-    <div class="login-page" id="loginPage">
-        <div class="login-box">
-            <div class="logo">
-                <div class="icon"><span>H</span></div>
-                <h1>yourHR 2.0</h1>
-                <p id="loginSubtitle">Admin va hamkor HR paneliga kirish</p>
-            </div>
-            <div class="panel-type" id="panelTypeDisplay">🔐 Tizimga kirish</div>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label>Login</label>
-                    <input type="text" id="loginUsername" placeholder="Login" autocomplete="username" />
+                    <div class="auth-divider">
+                        <span class="divider-line"></span>
+                        <span class="divider-text">Sign in to continue</span>
+                        <span class="divider-line"></span>
+                    </div>
+
+                    <div class="auth-buttons">
+                        <button class="auth-btn google" id="googleAuthBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                            </svg>
+                            Sign in with Google
+                        </button>
+                        <button class="auth-btn guest" id="guestAuthBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="8" r="4"/>
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                            </svg>
+                            Continue as Guest
+                        </button>
+                    </div>
+
+                    <div class="auth-footer">
+                        <span>By continuing, you agree to our</span>
+                        <a href="#">Terms</a>
+                        <span>and</span>
+                        <a href="#">Privacy Policy</a>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Parol</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
-                </div>
-                <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt"></i> Kirish</button>
-            </form>
-            <div class="demo">
-                
             </div>
         </div>
-    </div>
 
-    <!-- ===== MAIN APP ===== -->
-    <div id="mainApp" style="display:none;">
-        <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-        <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-
-        <!-- SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-brand">
-                <div class="logo">H</div>
-                <div>
-                    <div class="text">yourHR 2.0</div>
-                    <div class="badge" id="panelBadge">Admin</div>
-                </div>
-            </div>
-            <div class="sidebar-user">
-                <div class="avatar" id="userAvatar">A</div>
-                <div>
-                    <div class="name" id="userName">Admin</div>
-                    <div class="role" id="userRole">Super Admin</div>
-                </div>
-            </div>
-            <nav class="sidebar-nav" id="sidebarNav">
-                <!-- Admin nav -->
-                <div id="adminNav">
-                    <div class="label">Asosiy</div>
-                    <button class="item active" data-tab="dashboard" onclick="switchTab('dashboard')">
-                        <i class="fas fa-chart-pie"></i> Dashboard
-                    </button>
-                    <div class="label" style="margin-top:12px;">Boshqaruv</div>
-                    <button class="item" data-tab="companies" onclick="switchTab('companies')">
-                        <i class="fas fa-building"></i> Kompaniyalar
-                        <span class="count" id="companyCount">0</span>
-                    </button>
-                    <button class="item" data-tab="hrs" onclick="switchTab('hrs')">
-                        <i class="fas fa-user-tie"></i> HR'lar
-                        <span class="count" id="hrCount">0</span>
-                    </button>
-                    <div class="label" style="margin-top:12px;">Tizim</div>
-                    <button class="item" data-tab="support" onclick="switchTab('support')">
-                        <i class="fas fa-headset"></i> Support
-                        <span class="count danger" id="supportCount">0</span>
-                    </button>
-                </div>
-                <!-- HR nav -->
-                <div id="hrNav" style="display:none;">
-                    <div class="label">Asosiy</div>
-                    <button class="item active" data-tab="dashboard" onclick="switchTab('dashboard')">
-                        <i class="fas fa-chart-pie"></i> Dashboard
-                    </button>
-                    <div class="label" style="margin-top:12px;">Boshqaruv</div>
-                    <button class="item" data-tab="employees" onclick="switchTab('employees')">
-                        <i class="fas fa-users"></i> Xodimlar
-                        <span class="count" id="empCount">0</span>
-                    </button>
-                    <button class="item" data-tab="tasks" onclick="switchTab('tasks')">
-                        <i class="fas fa-tasks"></i> Vazifalar
-                        <span class="count" id="taskCount">0</span>
-                    </button>
-                    <button class="item" data-tab="attendance" onclick="switchTab('attendance')">
-                        <i class="fas fa-clock"></i> Davomat
-                    </button>
-                    <button class="item" data-tab="reports" onclick="switchTab('reports')">
-                        <i class="fas fa-file-alt"></i> Kunlik hisobotlar
-                        <span class="count danger" id="reportCount">0</span>
-                    </button>
-                    <div class="label" style="margin-top:12px;">Hisobotlar</div>
-                    <button class="item" data-tab="financial" onclick="switchTab('financial')">
-                        <i class="fas fa-coins"></i> Moliyaviy holat
-                    </button>
-                    <button class="item" data-tab="analytics" onclick="switchTab('analytics')">
-                        <i class="fas fa-chart-line"></i> Analitika
-                    </button>
-                    <div class="label" style="margin-top:12px;">Aloqa</div>
-                    <button class="item" data-tab="support" onclick="switchTab('support')">
-                        <i class="fas fa-headset"></i> Support
-                        <span class="count danger" id="supportCount">0</span>
-                    </button>
-                    <button class="item" data-tab="chat" onclick="switchTab('chat')">
-                        <i class="fas fa-comments"></i> Chat
-                        <span class="count" id="chatCount">0</span>
-                    </button>
-                    <div class="label" style="margin-top:12px;">Tizim</div>
-                    <button class="item" data-tab="rules" onclick="switchTab('rules')">
-                        <i class="fas fa-gavel"></i> Qoidalar
-                    </button>
-                </div>
-            </nav>
-            <div class="sidebar-footer">
-                <button class="logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Chiqish</button>
-            </div>
-        </aside>
-
-        <!-- MAIN CONTENT -->
-        <main class="main">
-            <div class="header">
-                <h1 id="pageTitle">📊 Dashboard</h1>
-                <div class="time" id="currentTime"></div>
-                <div class="actions">
-                    <button onclick="loadAll()" title="Yangilash"><i class="fas fa-sync-alt"></i></button>
-                    <button onclick="exportReport()" title="Hisobot"><i class="fas fa-file-export"></i></button>
-                </div>
-            </div>
-
-            <!-- ===== ADMIN DASHBOARD ===== -->
-            <div class="tab active" id="tab-dashboard">
-                <div class="stats">
-                    <div class="stat-card"><div class="label">Kompaniyalar</div><div class="value" id="statCompanies">0</div><div class="icon"><i class="fas fa-building"></i></div></div>
-                    <div class="stat-card"><div class="label">HR'lar</div><div class="value" id="statHrs">0</div><div class="icon"><i class="fas fa-user-tie"></i></div></div>
-                    <div class="stat-card"><div class="label">Xodimlar</div><div class="value" id="statEmployees">0</div><div class="icon"><i class="fas fa-users"></i></div></div>
-                    <div class="stat-card"><div class="label">Support</div><div class="value" id="statSupport">0</div><div class="icon"><i class="fas fa-headset"></i></div></div>
-                </div>
-                <div class="charts-grid">
-                    <div class="chart-card"><h4><i class="fas fa-chart-bar" style="color:#4f46e5;"></i> Kompaniyalar bo'yicha</h4><div class="chart-wrap"><canvas id="companiesChart"></canvas></div></div>
-                    <div class="chart-card"><h4><i class="fas fa-chart-line" style="color:#10b981;"></i> Faoliyat statistikasi</h4><div class="chart-wrap"><canvas id="activityChart"></canvas></div></div>
-                </div>
-            </div>
-
-            <!-- ===== ADMIN: KOMPANIYALAR ===== -->
-            <div class="tab" id="tab-companies">
-                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-                    <button class="btn btn-primary" onclick="showCompanyModal()"><i class="fas fa-plus"></i> Yangi Kompaniya</button>
-                    <input type="text" id="companySearch" placeholder="Qidirish..." style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;flex:1;max-width:300px;" onkeyup="filterCompanies()" />
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-building"></i> Kompaniyalar</h3><span style="font-size:12px;color:#94a3b8;">Jami: <span id="companyTotal">0</span></span></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>Kompaniya</th><th>STIR</th><th>HR Login</th><th>Xodimlar</th><th>Holat</th><th>Amallar</th></tr></thead>
-                            <tbody id="companiesTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== ADMIN: HR'LAR ===== -->
-            <div class="tab" id="tab-hrs">
-                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-                    <select id="hrCompanyFilter" onchange="loadHrs()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
-                        <option value="">Barcha kompaniyalar</option>
-                    </select>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-user-tie"></i> HR'lar</h3><span style="font-size:12px;color:#94a3b8;">Jami: <span id="hrTotal">0</span></span></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>F.I.O</th><th>Login</th><th>Kompaniya</th><th>Holat</th><th>Amallar</th></tr></thead>
-                            <tbody id="hrsTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== HR: XODIMLAR ===== -->
-            <div class="tab" id="tab-employees">
-                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
-                    <button class="btn btn-primary" onclick="showEmployeeModal()"><i class="fas fa-user-plus"></i> Yangi Xodim</button>
-                    <input type="text" id="employeeSearch" placeholder="Qidirish..." style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;flex:1;max-width:300px;" onkeyup="filterEmployees()" />
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-users"></i> Xodimlar Ro'yxati</h3><span style="font-size:12px;color:#94a3b8;">Jami: <span id="empTotal">0</span></span></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>F.I.O</th><th>Lavozim</th><th>Ish vaqti</th><th>Maosh</th><th>KPI</th><th>Telegram</th><th>Holat</th><th>Amallar</th></tr></thead>
-                            <tbody id="employeesTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== HR: VAZIFALAR ===== -->
-            <div class="tab" id="tab-tasks">
-                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-                    <button class="btn btn-primary" onclick="showTaskModal()"><i class="fas fa-plus"></i> Yangi Vazifa</button>
-                    <select id="taskFilter" onchange="loadTasks()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
-                        <option value="all">Barchasi</option>
-                        <option value="pending">Kutilmoqda</option>
-                        <option value="approved">Tasdiqlangan</option>
-                        <option value="rejected">Bekor qilingan</option>
-                        <option value="completed">Bajarildi</option>
-                    </select>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-tasks"></i> Vazifalar</h3></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>Vazifa</th><th>Xodim</th><th>Holat</th><th>Bonus</th><th>Muddati</th><th>Amallar</th></tr></thead>
-                            <tbody id="tasksTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== HR: DAVOMAT ===== -->
-            <div class="tab" id="tab-attendance">
-                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
-                    <button class="btn btn-primary" onclick="loadAttendance()"><i class="fas fa-sync-alt"></i> Yangilash</button>
-                    <span style="font-size:13px;color:#94a3b8;" id="attendanceDate"></span>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-clock"></i> Bugungi Davomat</h3></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>Xodim</th><th>Kelgan</th><th>Ketgan</th><th>Soat</th><th>Kechikish</th><th>Jarima</th><th>Holat</th></tr></thead>
-                            <tbody id="attendanceTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== HR: KUNLIK HISOBOTLAR ===== -->
-            <div class="tab" id="tab-reports">
-                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
-                    <select id="reportFilter" onchange="loadReports()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
-                        <option value="all">Barchasi</option>
-                        <option value="pending">Kutilmoqda</option>
-                        <option value="approved">Tasdiqlangan</option>
-                        <option value="rejected">Rad etilgan</option>
-                    </select>
-                    <button class="btn btn-primary" onclick="loadReports()"><i class="fas fa-sync-alt"></i> Yangilash</button>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-file-alt"></i> Kunlik Hisobotlar</h3></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>Xodim</th><th>Hisobot</th><th>Sana</th><th>Holat</th><th>Amallar</th></tr></thead>
-                            <tbody id="reportsTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== HR: MOLIYAVIY HOLAT ===== -->
-            <div class="tab" id="tab-financial">
-                <div class="stats" style="grid-template-columns: repeat(3, 1fr);">
-                    <div class="stat-card"><div class="label">Jami daromad</div><div class="value" id="financialIncome">0 so'm</div></div>
-                    <div class="stat-card"><div class="label">Jami xarajat</div><div class="value" id="financialExpense">0 so'm</div></div>
-                    <div class="stat-card"><div class="label">Sof foyda</div><div class="value" id="financialProfit">0 so'm</div></div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-coins"></i> Oylik maosh va KPI hisoboti</h3></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>Xodim</th><th>Lavozim</th><th>Oylik maosh</th><th>KPI %</th><th>Bonus</th><th>Jarima</th><th>Jami</th></tr></thead>
-                            <tbody id="salaryTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-arrow-up" style="color:#10b981;"></i> Lavozim oshirish takliflari</h3></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>Xodim</th><th>Joriy lavozim</th><th>Yangi lavozim</th><th>KPI</th><th>Sabab</th></tr></thead>
-                            <tbody id="promotionTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== HR: ANALITIKA ===== -->
-            <div class="tab" id="tab-analytics">
-                <div class="stats" style="grid-template-columns: repeat(4, 1fr);">
-                    <div class="stat-card"><div class="label">O'rtacha KPI</div><div class="value" id="analyticsKpi">0%</div></div>
-                    <div class="stat-card"><div class="label">Jami xodimlar</div><div class="value" id="analyticsEmployees">0</div></div>
-                    <div class="stat-card"><div class="label">Davomat sifati</div><div class="value" id="analyticsAttendance">0%</div></div>
-                    <div class="stat-card"><div class="label">Jami jarimalar</div><div class="value" id="analyticsFines">0 so'm</div></div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-trophy" style="color:#f59e0b;"></i> Xodimlar Reytingi</h3></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>Xodim</th><th>KPI</th><th>Bajarilgan vazifalar</th><th>Jarimalar</th><th>Reyting</th><th>Tavsiya</th></tr></thead>
-                            <tbody id="rankingTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== HR: CHAT ===== -->
-            <div class="tab" id="tab-chat">
-                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
-                    <select id="chatEmployee" onchange="onChatEmployeeSelect()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;min-width:200px;">
-                        <option value="">-- Xodim tanlang --</option>
-                    </select>
-                    <span id="selectedChatInfo" class="selected-chat" style="display:none;">
-                        <i class="fas fa-user"></i> <span id="selectedChatName"></span>
-                    </span>
-                    <button class="btn btn-primary" onclick="loadChat()"><i class="fas fa-sync-alt"></i> Yangilash</button>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-comments"></i> Xodim bilan chat</h3>
-                        <span style="font-size:12px;color:#94a3b8;" id="chatStatus">Xodim tanlang</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="chat-container" id="chatContainer">
-                            <div class="empty-state"><i class="fas fa-comment"></i> Xodim tanlang va suhbatni boshlang</div>
+        <!-- MAIN APP -->
+        <div class="app-main" id="appMain" style="display:none;">
+            <!-- LEFT SIDEBAR -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <rect x="4" y="4" width="24" height="24" rx="8" fill="currentColor"/>
+                            <path d="M10 12L14 16L10 20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M22 20L18 16L22 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="16" cy="16" r="2" fill="white"/>
+                        </svg>
+                        <div>
+                            <span class="logo-text">Cuddly</span>
+                            <span class="logo-sub">AI v1.0</span>
                         </div>
-                        <div class="chat-input-area">
-                            <input type="text" id="chatInput" placeholder="Xabar yozing..." disabled />
-                            <button class="btn btn-primary" onclick="sendChat()" id="chatSendBtn" disabled>
-                                <i class="fas fa-paper-plane"></i> Yuborish
+                    </div>
+                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <button class="new-chat-btn" id="newChatBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    New Chat
+                </button>
+
+                <div class="search-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search chats..." />
+                    <span class="search-shortcut">⌘K</span>
+                </div>
+
+                <div class="sidebar-content">
+                    <div class="chats-section">
+                        <div class="section-header">
+                            <span class="section-title">Chats</span>
+                        </div>
+                        <div class="chats-list" id="chatsList"></div>
+                    </div>
+                </div>
+
+                <div class="sidebar-bottom">
+                    <div class="api-status" id="apiStatus">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span class="status-text" id="statusText">API: Not configured</span>
+                    </div>
+                    <button class="settings-btn" id="settingsBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                    </button>
+                    <div class="profile-card" id="profileCard">
+                        <div class="profile-avatar" id="profileAvatar">
+                            <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+                                <circle cx="18" cy="12" r="6" fill="currentColor" opacity="0.6"/>
+                                <path d="M18 20C12.477 20 8 23.314 8 27.5H28C28 23.314 23.523 20 18 20z" fill="currentColor" opacity="0.4"/>
+                            </svg>
+                        </div>
+                        <div class="profile-info">
+                            <span class="profile-name" id="profileName">User</span>
+                            <span class="profile-role" id="profileRole">Guest</span>
+                        </div>
+                        <button class="profile-action logout-btn" id="logoutBtn" title="Logout">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CHAT WORKSPACE -->
+            <main class="chat-main" id="mainContent">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="chat-header-info">
+                            <h1 id="chatTitle">Cuddly AI</h1>
+                            <span class="status-badge" id="chatStatus">Ready</span>
+                        </div>
+                        <div class="chat-header-actions">
+                            <button class="header-btn" id="shareBtn" title="Share">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="18" cy="5" r="3"/>
+                                    <circle cx="6" cy="12" r="3"/>
+                                    <circle cx="18" cy="19" r="3"/>
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                                </svg>
+                            </button>
+                            <button class="header-btn" id="pinBtn" title="Pin">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 17v5M5 12h14"/>
+                                    <path d="M7 12V7a5 5 0 0110 0v5"/>
+                                </svg>
+                            </button>
+                            <button class="header-btn" id="deleteBtn" title="Delete">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/>
+                                </svg>
+                            </button>
+                            <button class="header-btn" id="clearBtn" title="Clear">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4l16 16M20 4L4 20"/>
+                                </svg>
                             </button>
                         </div>
-                        <div style="font-size:11px;color:#94a3b8;margin-top:8px;">
-                            <i class="fas fa-info-circle"></i> Xabarlar xodimning Telegram botiga yuboriladi
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message-center">
+                            <div class="ai-orb">
+                                <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                                    <rect x="10" y="10" width="60" height="60" rx="20" fill="currentColor" opacity="0.04"/>
+                                    <rect x="20" y="20" width="40" height="40" rx="12" fill="currentColor" opacity="0.06"/>
+                                    <path d="M36 32L44 40L36 48" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                                    <path d="M44 32L36 40L44 48" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                                </svg>
+                                <div class="orb-glow"></div>
+                            </div>
+                            <h3>Start a conversation</h3>
+                            <p>Ask anything</p>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input - FIXED LAYOUT -->
+                    <div class="chat-input-wrapper">
+                        <div class="chat-input-container">
+                            <!-- Model Selector -->
+                            <div class="input-model-selector">
+                                <select id="modelSelector">
+                                    <option value="deepseek">DeepSeek</option>
+                                    <option value="gemini">Gemini Pro</option>
+                                    <option value="claude">Claude</option>
+                                    <option value="gpt">GPT-5.5</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Textarea -->
+                            <div class="textarea-wrapper">
+                                <textarea 
+                                    id="promptInput" 
+                                    placeholder="Ask anything..."
+                                    rows="1"
+                                ></textarea>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="input-actions">
+                                <button class="input-action-btn" id="attachBtn" title="Attach file">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
+                                    </svg>
+                                </button>
+                                <button class="input-action-btn" id="voiceBtn" title="Voice input">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/>
+                                        <path d="M19 10v2a7 7 0 01-14 0v-2"/>
+                                        <line x1="12" y1="19" x2="12" y2="23"/>
+                                        <line x1="8" y1="23" x2="16" y2="23"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <!-- Send Button -->
+                            <button class="send-btn" id="sendBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="input-footer">
+                            <span class="ai-warning">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 8v4M12 16h.01"/>
+                                </svg>
+                                AI may make mistakes. Verify important information.
+                            </span>
+                            <span class="char-counter"><span id="charCount">0</span></span>
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
+        </div>
+    </div>
 
-            <!-- ===== HR: QOIDALAR ===== -->
-            <div class="tab" id="tab-rules">
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-gavel"></i> Kompaniya Qoidalari</h3></div>
-                    <div class="card-body" style="max-width:600px;">
-                        <div class="form-group">
-                            <label><i class="fas fa-clock" style="color:#ef4444;"></i> Kechikish uchun jarima (so'm)</label>
-                            <input type="number" id="ruleLate" value="50000" />
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚙️ Settings</h3>
+                <button class="modal-close" id="closeSettings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h4>👤 Profile</h4>
+                    <div class="profile-info-modal">
+                        <div class="profile-avatar-modal" id="profileAvatarModal">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                                <circle cx="32" cy="22" r="12" fill="currentColor" opacity="0.6"/>
+                                <path d="M32 38C20.954 38 12 43.314 12 50.5H52C52 43.314 43.046 38 32 38z" fill="currentColor" opacity="0.4"/>
+                            </svg>
                         </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-hourglass-end" style="color:#ef4444;"></i> Vazifa kechikishi uchun jarima (so'm)</label>
-                            <input type="number" id="ruleTask" value="100000" />
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-percent" style="color:#4f46e5;"></i> KPI minimal chegarasi (%)</label>
-                            <input type="number" id="ruleKpi" value="60" min="0" max="100" />
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-gift" style="color:#10b981;"></i> Erta bajarish uchun bonus (so'm)</label>
-                            <input type="number" id="ruleBonus" value="50000" />
-                        </div>
-                        <button class="btn btn-primary" onclick="saveRules()"><i class="fas fa-save"></i> Qoidalarni Saqlash</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-info-circle"></i> Kompaniya Ma'lumotlari</h3></div>
-                    <div class="card-body">
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:600px;">
-                            <div><span style="color:#94a3b8;">Kompaniya:</span> <strong id="infoCompany">-</strong></div>
-                            <div><span style="color:#94a3b8;">HR:</span> <strong id="infoHr">-</strong></div>
-                            <div><span style="color:#94a3b8;">Xodimlar:</span> <strong id="infoEmployees">0</strong></div>
-                            <div><span style="color:#94a3b8;">O'rtacha KPI:</span> <strong id="infoKpi">0%</strong></div>
-                            <div><span style="color:#94a3b8;">Jami jarimalar:</span> <strong id="infoFines">0 so'm</strong></div>
-                            <div><span style="color:#94a3b8;">Jami bonuslar:</span> <strong id="infoBonuses">0 so'm</strong></div>
+                        <div>
+                            <p><strong id="profileModalName">User</strong></p>
+                            <p style="color: var(--text-secondary); font-size: 13px;" id="profileModalEmail">guest@cuddly.ai</p>
+                            <p style="color: var(--text-muted); font-size: 12px;" id="profileModalRole">Role: Guest</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- ===== SUPPORT (Admin & HR) ===== -->
-            <div class="tab" id="tab-support">
-                <div class="support-only" id="supportHeader">
-                    <i class="fas fa-headset"></i>
-                    <p style="font-weight:600;color:#065f46;" id="supportHeaderTitle">📌 Support tizimi</p>
-                    <p style="font-size:13px;color:#64748b;" id="supportHeaderDesc">Muammo yoki savollaringiz bo'lsa, ticket yarating</p>
+                <div class="settings-divider"></div>
+
+                <div class="settings-section">
+                    <h4>🔑 API Keys</h4>
+                    <p class="settings-desc">Enter your API keys to enable AI models</p>
+                    
+                    <div class="form-group">
+                        <label>DeepSeek API Key</label>
+                        <input type="password" id="deepseekKey" placeholder="sk-..." />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Gemini Pro API Key</label>
+                        <input type="password" id="geminiKey" placeholder="AIzaSy..." />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Claude API Key</label>
+                        <input type="password" id="claudeKey" placeholder="sk-ant-..." />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>OpenAI API Key</label>
+                        <input type="password" id="openaiKey" placeholder="sk-proj-..." />
+                    </div>
+                    
+                    <button class="save-btn" id="saveKeysBtn">Save API Keys</button>
                 </div>
-                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-                    <button class="btn btn-primary" onclick="showSupportModal()"><i class="fas fa-plus"></i> Yangi Ticket</button>
-                    <select id="supportFilter" onchange="loadSupport()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
-                        <option value="all">Barcha</option>
-                        <option value="open">Ochiq</option>
-                        <option value="in_progress">Jarayonda</option>
-                        <option value="resolved">Hal qilindi</option>
-                    </select>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3><i class="fas fa-headset"></i> Support Ticketlar</h3></div>
-                    <div class="card-body">
-                        <table>
-                            <thead><tr><th>#</th><th>Kompaniya/HR</th><th>Xodim</th><th>Sarlavha</th><th>Holat</th><th>Javob</th><th>Sana</th><th>Amallar</th></tr></thead>
-                            <tbody id="supportTable"></tbody>
-                        </table>
+
+                <div class="settings-divider"></div>
+
+                <div class="settings-section">
+                    <h4>🎨 Theme</h4>
+                    <div class="theme-options">
+                        <button class="theme-option active" data-theme="light">☀️ Light</button>
+                        <button class="theme-option" data-theme="dark">🌙 Dark</button>
+                        <button class="theme-option" data-theme="system">💻 System</button>
                     </div>
                 </div>
-            </div>
 
-        </main>
-    </div>
+                <div class="settings-divider"></div>
 
-    <!-- ===== MODALS ===== -->
+                <div class="settings-section">
+                    <h4>📊 Statistics</h4>
+                    <div class="stats-grid-modal">
+                        <div class="stat-item">
+                            <span class="stat-number" id="statChats">0</span>
+                            <span class="stat-label">Chats</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="statMessages">0</span>
+                            <span class="stat-label">Messages</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="statModels">0</span>
+                            <span class="stat-label">Models Used</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="statPinned">0</span>
+                            <span class="stat-label">Pinned</span>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Company Modal -->
-    <div class="modal" id="companyModal">
-        <div class="modal-content">
-            <div class="modal-header"><h2 id="companyModalTitle">Yangi Kompaniya</h2><button class="close" onclick="closeModal('companyModal')">&times;</button></div>
-            <form id="companyForm" onsubmit="saveCompany(event)">
-                <input type="hidden" id="companyId" />
-                <div class="form-group"><label>Kompaniya nomi *</label><input type="text" id="compName" required /></div>
-                <div class="form-group"><label>STIR *</label><input type="text" id="compTin" required /></div>
-                <div class="form-group"><label>Manzil</label><input type="text" id="compAddress" /></div>
-                <div class="form-row">
-                    <div class="form-group"><label>Telefon</label><input type="text" id="compPhone" /></div>
-                    <div class="form-group"><label>Email</label><input type="email" id="compEmail" /></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="closeModal('companyModal')">Bekor qilish</button>
-                    <button type="submit" class="btn btn-primary">Saqlash</button>
-                </div>
-            </form>
-        </div>
-    </div>
+                <div class="settings-divider"></div>
 
-    <!-- Employee Modal -->
-    <div class="modal" id="employeeModal">
-        <div class="modal-content">
-            <div class="modal-header"><h2>Yangi Xodim</h2><button class="close" onclick="closeModal('employeeModal')">&times;</button></div>
-            <form id="employeeForm" onsubmit="saveEmployee(event)">
-                <div class="form-group"><label>F.I.O *</label><input type="text" id="empName" required /></div>
-                <div class="form-group"><label>Lavozim</label><input type="text" id="empPosition" /></div>
-                <div class="form-row">
-                    <div class="form-group"><label>Ish vaqti: Kelish</label><input type="time" id="empWorkStart" value="09:00" /></div>
-                    <div class="form-group"><label>Ish vaqti: Ketish</label><input type="time" id="empWorkEnd" value="18:00" /></div>
+                <div class="settings-section">
+                    <h4>ℹ️ About</h4>
+                    <p style="color: var(--text-secondary); font-size: 13px;">
+                        <strong>Cuddly AI v1.0</strong><br />
+                        A premium AI chat application with support for multiple AI models.<br />
+                        Built with ❤️
+                    </p>
                 </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Telegram Login</label><input type="text" id="empTelegramLogin" placeholder="telegram_login" /></div>
-                    <div class="form-group"><label>Telegram Parol</label><input type="password" id="empTelegramPass" placeholder="••••••••" /></div>
-                </div>
-                <div class="form-group"><label>Maosh</label><input type="number" id="empSalary" value="5000000" /></div>
-                <div class="form-group"><label>KPI maqsad (%)</label><input type="number" id="empKpi" value="100" min="0" max="100" /></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="closeModal('employeeModal')">Bekor qilish</button>
-                    <button type="submit" class="btn btn-primary">Saqlash</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Task Modal -->
-    <div class="modal" id="taskModal">
-        <div class="modal-content">
-            <div class="modal-header"><h2>Yangi Vazifa</h2><button class="close" onclick="closeModal('taskModal')">&times;</button></div>
-            <form id="taskForm" onsubmit="saveTask(event)">
-                <div class="form-group"><label>Xodim *</label><select id="taskEmployee" required></select></div>
-                <div class="form-group"><label>Sarlavha *</label><input type="text" id="taskTitle" required /></div>
-                <div class="form-group"><label>Tavsif</label><textarea id="taskDesc" rows="3"></textarea></div>
-                <div class="form-group"><label>Prioritet</label>
-                    <select id="taskPriority">
-                        <option value="low">Past</option>
-                        <option value="medium" selected>O'rta</option>
-                        <option value="high">Yuqori</option>
-                        <option value="urgent">Tez</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>Muddati</label><input type="datetime-local" id="taskDeadline" /></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="closeModal('taskModal')">Bekor qilish</button>
-                    <button type="submit" class="btn btn-primary">Saqlash</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Report Modal -->
-    <div class="modal" id="reportModal">
-        <div class="modal-content">
-            <div class="modal-header"><h2>Hisobot Detallari</h2><button class="close" onclick="closeModal('reportModal')">&times;</button></div>
-            <div id="reportDetail"></div>
-            <div class="modal-footer">
-                <button class="btn btn-success" onclick="approveReport()"><i class="fas fa-check"></i> Tasdiqlash</button>
-                <button class="btn btn-danger" onclick="rejectReport()"><i class="fas fa-times"></i> Rad etish</button>
-                <button class="btn btn-outline" onclick="closeModal('reportModal')">Yopish</button>
             </div>
         </div>
     </div>
 
-    <!-- Support Modal -->
-    <div class="modal" id="supportModal">
-        <div class="modal-content">
-            <div class="modal-header"><h2>Yangi Support Ticket</h2><button class="close" onclick="closeModal('supportModal')">&times;</button></div>
-            <form id="supportForm" onsubmit="saveSupport(event)">
-                <div class="form-group"><label>Sarlavha *</label><input type="text" id="supportTitle" required /></div>
-                <div class="form-group"><label>Tavsif *</label><textarea id="supportDesc" rows="4" required></textarea></div>
-                <div class="form-group"><label>Kategoriya</label>
-                    <select id="supportCategory">
-                        <option value="technical">Texnik</option>
-                        <option value="financial">Moliyaviy</option>
-                        <option value="hr">HR</option>
-                        <option value="other">Boshqa</option>
-                    </select>
+    <!-- Command Palette -->
+    <div class="command-palette" id="commandPalette">
+        <div class="command-overlay"></div>
+        <div class="command-content">
+            <div class="command-input-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <input type="text" id="commandInput" placeholder="Search or type a command..." />
+                <span class="command-hint">ESC</span>
+            </div>
+            <div class="command-results" id="commandResults">
+                <div class="command-group">
+                    <span class="command-group-title">Commands</span>
+                    <div class="command-item" data-action="newChat">New Chat</div>
+                    <div class="command-item" data-action="settings">Settings</div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="closeModal('supportModal')">Bekor qilish</button>
-                    <button type="submit" class="btn btn-primary">Yuborish</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
-    <div class="notif-container" id="notifContainer"></div>
-
-    <script src="static/js/app.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
