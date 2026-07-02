@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>yourHR 2.0 — Admin va HR Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="static/css/app.css" />
+
+</head>
+<body>
+
+    <!-- ===== LOGIN ===== -->
+    <div class="login-page" id="loginPage">
+        <div class="login-box">
+            <div class="logo">
+                <div class="icon"><span>H</span></div>
+                <h1>yourHR 2.0</h1>
+                <p id="loginSubtitle">Admin va hamkor HR paneliga kirish</p>
+            </div>
+            <div class="panel-type" id="panelTypeDisplay">🔐 Tizimga kirish</div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Login</label>
+                    <input type="text" id="loginUsername" placeholder="Login" autocomplete="username" />
+                </div>
+                <div class="form-group">
+                    <label>Parol</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+                </div>
+                <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt"></i> Kirish</button>
+            </form>
+            <div class="demo">
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div id="mainApp" style="display:none;">
+        <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+        <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo">H</div>
+                <div>
+                    <div class="text">yourHR 2.0</div>
+                    <div class="badge" id="panelBadge">Admin</div>
+                </div>
+            </div>
+            <div class="sidebar-user">
+                <div class="avatar" id="userAvatar">A</div>
+                <div>
+                    <div class="name" id="userName">Admin</div>
+                    <div class="role" id="userRole">Super Admin</div>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Admin nav -->
+                <div id="adminNav">
+                    <div class="label">Asosiy</div>
+                    <button class="item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </button>
+                    <div class="label" style="margin-top:12px;">Boshqaruv</div>
+                    <button class="item" data-tab="companies" onclick="switchTab('companies')">
+                        <i class="fas fa-building"></i> Kompaniyalar
+                        <span class="count" id="companyCount">0</span>
+                    </button>
+                    <button class="item" data-tab="hrs" onclick="switchTab('hrs')">
+                        <i class="fas fa-user-tie"></i> HR'lar
+                        <span class="count" id="hrCount">0</span>
+                    </button>
+                    <div class="label" style="margin-top:12px;">Tizim</div>
+                    <button class="item" data-tab="support" onclick="switchTab('support')">
+                        <i class="fas fa-headset"></i> Support
+                        <span class="count danger" id="supportCount">0</span>
+                    </button>
+                </div>
+                <!-- HR nav -->
+                <div id="hrNav" style="display:none;">
+                    <div class="label">Asosiy</div>
+                    <button class="item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </button>
+                    <div class="label" style="margin-top:12px;">Boshqaruv</div>
+                    <button class="item" data-tab="employees" onclick="switchTab('employees')">
+                        <i class="fas fa-users"></i> Xodimlar
+                        <span class="count" id="empCount">0</span>
+                    </button>
+                    <button class="item" data-tab="tasks" onclick="switchTab('tasks')">
+                        <i class="fas fa-tasks"></i> Vazifalar
+                        <span class="count" id="taskCount">0</span>
+                    </button>
+                    <button class="item" data-tab="attendance" onclick="switchTab('attendance')">
+                        <i class="fas fa-clock"></i> Davomat
+                    </button>
+                    <button class="item" data-tab="reports" onclick="switchTab('reports')">
+                        <i class="fas fa-file-alt"></i> Kunlik hisobotlar
+                        <span class="count danger" id="reportCount">0</span>
+                    </button>
+                    <div class="label" style="margin-top:12px;">Hisobotlar</div>
+                    <button class="item" data-tab="financial" onclick="switchTab('financial')">
+                        <i class="fas fa-coins"></i> Moliyaviy holat
+                    </button>
+                    <button class="item" data-tab="analytics" onclick="switchTab('analytics')">
+                        <i class="fas fa-chart-line"></i> Analitika
+                    </button>
+                    <div class="label" style="margin-top:12px;">Aloqa</div>
+                    <button class="item" data-tab="support" onclick="switchTab('support')">
+                        <i class="fas fa-headset"></i> Support
+                        <span class="count danger" id="supportCount">0</span>
+                    </button>
+                    <button class="item" data-tab="chat" onclick="switchTab('chat')">
+                        <i class="fas fa-comments"></i> Chat
+                        <span class="count" id="chatCount">0</span>
+                    </button>
+                    <div class="label" style="margin-top:12px;">Tizim</div>
+                    <button class="item" data-tab="rules" onclick="switchTab('rules')">
+                        <i class="fas fa-gavel"></i> Qoidalar
+                    </button>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Chiqish</button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main">
+            <div class="header">
+                <h1 id="pageTitle">📊 Dashboard</h1>
+                <div class="time" id="currentTime"></div>
+                <div class="actions">
+                    <button onclick="loadAll()" title="Yangilash"><i class="fas fa-sync-alt"></i></button>
+                    <button onclick="exportReport()" title="Hisobot"><i class="fas fa-file-export"></i></button>
+                </div>
+            </div>
+
+            <!-- ===== ADMIN DASHBOARD ===== -->
+            <div class="tab active" id="tab-dashboard">
+                <div class="stats">
+                    <div class="stat-card"><div class="label">Kompaniyalar</div><div class="value" id="statCompanies">0</div><div class="icon"><i class="fas fa-building"></i></div></div>
+                    <div class="stat-card"><div class="label">HR'lar</div><div class="value" id="statHrs">0</div><div class="icon"><i class="fas fa-user-tie"></i></div></div>
+                    <div class="stat-card"><div class="label">Xodimlar</div><div class="value" id="statEmployees">0</div><div class="icon"><i class="fas fa-users"></i></div></div>
+                    <div class="stat-card"><div class="label">Support</div><div class="value" id="statSupport">0</div><div class="icon"><i class="fas fa-headset"></i></div></div>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-card"><h4><i class="fas fa-chart-bar" style="color:#4f46e5;"></i> Kompaniyalar bo'yicha</h4><div class="chart-wrap"><canvas id="companiesChart"></canvas></div></div>
+                    <div class="chart-card"><h4><i class="fas fa-chart-line" style="color:#10b981;"></i> Faoliyat statistikasi</h4><div class="chart-wrap"><canvas id="activityChart"></canvas></div></div>
+                </div>
+            </div>
+
+            <!-- ===== ADMIN: KOMPANIYALAR ===== -->
+            <div class="tab" id="tab-companies">
+                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="showCompanyModal()"><i class="fas fa-plus"></i> Yangi Kompaniya</button>
+                    <input type="text" id="companySearch" placeholder="Qidirish..." style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;flex:1;max-width:300px;" onkeyup="filterCompanies()" />
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-building"></i> Kompaniyalar</h3><span style="font-size:12px;color:#94a3b8;">Jami: <span id="companyTotal">0</span></span></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>Kompaniya</th><th>STIR</th><th>HR Login</th><th>Xodimlar</th><th>Holat</th><th>Amallar</th></tr></thead>
+                            <tbody id="companiesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ADMIN: HR'LAR ===== -->
+            <div class="tab" id="tab-hrs">
+                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                    <select id="hrCompanyFilter" onchange="loadHrs()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
+                        <option value="">Barcha kompaniyalar</option>
+                    </select>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-user-tie"></i> HR'lar</h3><span style="font-size:12px;color:#94a3b8;">Jami: <span id="hrTotal">0</span></span></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>F.I.O</th><th>Login</th><th>Kompaniya</th><th>Holat</th><th>Amallar</th></tr></thead>
+                            <tbody id="hrsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== HR: XODIMLAR ===== -->
+            <div class="tab" id="tab-employees">
+                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+                    <button class="btn btn-primary" onclick="showEmployeeModal()"><i class="fas fa-user-plus"></i> Yangi Xodim</button>
+                    <input type="text" id="employeeSearch" placeholder="Qidirish..." style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;flex:1;max-width:300px;" onkeyup="filterEmployees()" />
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-users"></i> Xodimlar Ro'yxati</h3><span style="font-size:12px;color:#94a3b8;">Jami: <span id="empTotal">0</span></span></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>F.I.O</th><th>Lavozim</th><th>Ish vaqti</th><th>Maosh</th><th>KPI</th><th>Telegram</th><th>Holat</th><th>Amallar</th></tr></thead>
+                            <tbody id="employeesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== HR: VAZIFALAR ===== -->
+            <div class="tab" id="tab-tasks">
+                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="showTaskModal()"><i class="fas fa-plus"></i> Yangi Vazifa</button>
+                    <select id="taskFilter" onchange="loadTasks()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
+                        <option value="all">Barchasi</option>
+                        <option value="pending">Kutilmoqda</option>
+                        <option value="approved">Tasdiqlangan</option>
+                        <option value="rejected">Bekor qilingan</option>
+                        <option value="completed">Bajarildi</option>
+                    </select>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-tasks"></i> Vazifalar</h3></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>Vazifa</th><th>Xodim</th><th>Holat</th><th>Bonus</th><th>Muddati</th><th>Amallar</th></tr></thead>
+                            <tbody id="tasksTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== HR: DAVOMAT ===== -->
+            <div class="tab" id="tab-attendance">
+                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+                    <button class="btn btn-primary" onclick="loadAttendance()"><i class="fas fa-sync-alt"></i> Yangilash</button>
+                    <span style="font-size:13px;color:#94a3b8;" id="attendanceDate"></span>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-clock"></i> Bugungi Davomat</h3></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>Xodim</th><th>Kelgan</th><th>Ketgan</th><th>Soat</th><th>Kechikish</th><th>Jarima</th><th>Holat</th></tr></thead>
+                            <tbody id="attendanceTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== HR: KUNLIK HISOBOTLAR ===== -->
+            <div class="tab" id="tab-reports">
+                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+                    <select id="reportFilter" onchange="loadReports()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
+                        <option value="all">Barchasi</option>
+                        <option value="pending">Kutilmoqda</option>
+                        <option value="approved">Tasdiqlangan</option>
+                        <option value="rejected">Rad etilgan</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="loadReports()"><i class="fas fa-sync-alt"></i> Yangilash</button>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-file-alt"></i> Kunlik Hisobotlar</h3></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>Xodim</th><th>Hisobot</th><th>Sana</th><th>Holat</th><th>Amallar</th></tr></thead>
+                            <tbody id="reportsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== HR: MOLIYAVIY HOLAT ===== -->
+            <div class="tab" id="tab-financial">
+                <div class="stats" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="stat-card"><div class="label">Jami daromad</div><div class="value" id="financialIncome">0 so'm</div></div>
+                    <div class="stat-card"><div class="label">Jami xarajat</div><div class="value" id="financialExpense">0 so'm</div></div>
+                    <div class="stat-card"><div class="label">Sof foyda</div><div class="value" id="financialProfit">0 so'm</div></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-coins"></i> Oylik maosh va KPI hisoboti</h3></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>Xodim</th><th>Lavozim</th><th>Oylik maosh</th><th>KPI %</th><th>Bonus</th><th>Jarima</th><th>Jami</th></tr></thead>
+                            <tbody id="salaryTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-arrow-up" style="color:#10b981;"></i> Lavozim oshirish takliflari</h3></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>Xodim</th><th>Joriy lavozim</th><th>Yangi lavozim</th><th>KPI</th><th>Sabab</th></tr></thead>
+                            <tbody id="promotionTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== HR: ANALITIKA ===== -->
+            <div class="tab" id="tab-analytics">
+                <div class="stats" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="stat-card"><div class="label">O'rtacha KPI</div><div class="value" id="analyticsKpi">0%</div></div>
+                    <div class="stat-card"><div class="label">Jami xodimlar</div><div class="value" id="analyticsEmployees">0</div></div>
+                    <div class="stat-card"><div class="label">Davomat sifati</div><div class="value" id="analyticsAttendance">0%</div></div>
+                    <div class="stat-card"><div class="label">Jami jarimalar</div><div class="value" id="analyticsFines">0 so'm</div></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-trophy" style="color:#f59e0b;"></i> Xodimlar Reytingi</h3></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>Xodim</th><th>KPI</th><th>Bajarilgan vazifalar</th><th>Jarimalar</th><th>Reyting</th><th>Tavsiya</th></tr></thead>
+                            <tbody id="rankingTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== HR: CHAT ===== -->
+            <div class="tab" id="tab-chat">
+                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+                    <select id="chatEmployee" onchange="onChatEmployeeSelect()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;min-width:200px;">
+                        <option value="">-- Xodim tanlang --</option>
+                    </select>
+                    <span id="selectedChatInfo" class="selected-chat" style="display:none;">
+                        <i class="fas fa-user"></i> <span id="selectedChatName"></span>
+                    </span>
+                    <button class="btn btn-primary" onclick="loadChat()"><i class="fas fa-sync-alt"></i> Yangilash</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-comments"></i> Xodim bilan chat</h3>
+                        <span style="font-size:12px;color:#94a3b8;" id="chatStatus">Xodim tanlang</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="chat-container" id="chatContainer">
+                            <div class="empty-state"><i class="fas fa-comment"></i> Xodim tanlang va suhbatni boshlang</div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chatInput" placeholder="Xabar yozing..." disabled />
+                            <button class="btn btn-primary" onclick="sendChat()" id="chatSendBtn" disabled>
+                                <i class="fas fa-paper-plane"></i> Yuborish
+                            </button>
+                        </div>
+                        <div style="font-size:11px;color:#94a3b8;margin-top:8px;">
+                            <i class="fas fa-info-circle"></i> Xabarlar xodimning Telegram botiga yuboriladi
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== HR: QOIDALAR ===== -->
+            <div class="tab" id="tab-rules">
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-gavel"></i> Kompaniya Qoidalari</h3></div>
+                    <div class="card-body" style="max-width:600px;">
+                        <div class="form-group">
+                            <label><i class="fas fa-clock" style="color:#ef4444;"></i> Kechikish uchun jarima (so'm)</label>
+                            <input type="number" id="ruleLate" value="50000" />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-hourglass-end" style="color:#ef4444;"></i> Vazifa kechikishi uchun jarima (so'm)</label>
+                            <input type="number" id="ruleTask" value="100000" />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-percent" style="color:#4f46e5;"></i> KPI minimal chegarasi (%)</label>
+                            <input type="number" id="ruleKpi" value="60" min="0" max="100" />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-gift" style="color:#10b981;"></i> Erta bajarish uchun bonus (so'm)</label>
+                            <input type="number" id="ruleBonus" value="50000" />
+                        </div>
+                        <button class="btn btn-primary" onclick="saveRules()"><i class="fas fa-save"></i> Qoidalarni Saqlash</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-info-circle"></i> Kompaniya Ma'lumotlari</h3></div>
+                    <div class="card-body">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:600px;">
+                            <div><span style="color:#94a3b8;">Kompaniya:</span> <strong id="infoCompany">-</strong></div>
+                            <div><span style="color:#94a3b8;">HR:</span> <strong id="infoHr">-</strong></div>
+                            <div><span style="color:#94a3b8;">Xodimlar:</span> <strong id="infoEmployees">0</strong></div>
+                            <div><span style="color:#94a3b8;">O'rtacha KPI:</span> <strong id="infoKpi">0%</strong></div>
+                            <div><span style="color:#94a3b8;">Jami jarimalar:</span> <strong id="infoFines">0 so'm</strong></div>
+                            <div><span style="color:#94a3b8;">Jami bonuslar:</span> <strong id="infoBonuses">0 so'm</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SUPPORT (Admin & HR) ===== -->
+            <div class="tab" id="tab-support">
+                <div class="support-only" id="supportHeader">
+                    <i class="fas fa-headset"></i>
+                    <p style="font-weight:600;color:#065f46;" id="supportHeaderTitle">📌 Support tizimi</p>
+                    <p style="font-size:13px;color:#64748b;" id="supportHeaderDesc">Muammo yoki savollaringiz bo'lsa, ticket yarating</p>
+                </div>
+                <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="showSupportModal()"><i class="fas fa-plus"></i> Yangi Ticket</button>
+                    <select id="supportFilter" onchange="loadSupport()" style="padding:8px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
+                        <option value="all">Barcha</option>
+                        <option value="open">Ochiq</option>
+                        <option value="in_progress">Jarayonda</option>
+                        <option value="resolved">Hal qilindi</option>
+                    </select>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-headset"></i> Support Ticketlar</h3></div>
+                    <div class="card-body">
+                        <table>
+                            <thead><tr><th>#</th><th>Kompaniya/HR</th><th>Xodim</th><th>Sarlavha</th><th>Holat</th><th>Javob</th><th>Sana</th><th>Amallar</th></tr></thead>
+                            <tbody id="supportTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+
+    <!-- Company Modal -->
+    <div class="modal" id="companyModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2 id="companyModalTitle">Yangi Kompaniya</h2><button class="close" onclick="closeModal('companyModal')">&times;</button></div>
+            <form id="companyForm" onsubmit="saveCompany(event)">
+                <input type="hidden" id="companyId" />
+                <div class="form-group"><label>Kompaniya nomi *</label><input type="text" id="compName" required /></div>
+                <div class="form-group"><label>STIR *</label><input type="text" id="compTin" required /></div>
+                <div class="form-group"><label>Manzil</label><input type="text" id="compAddress" /></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Telefon</label><input type="text" id="compPhone" /></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="compEmail" /></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('companyModal')">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Employee Modal -->
+    <div class="modal" id="employeeModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2>Yangi Xodim</h2><button class="close" onclick="closeModal('employeeModal')">&times;</button></div>
+            <form id="employeeForm" onsubmit="saveEmployee(event)">
+                <div class="form-group"><label>F.I.O *</label><input type="text" id="empName" required /></div>
+                <div class="form-group"><label>Lavozim</label><input type="text" id="empPosition" /></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Ish vaqti: Kelish</label><input type="time" id="empWorkStart" value="09:00" /></div>
+                    <div class="form-group"><label>Ish vaqti: Ketish</label><input type="time" id="empWorkEnd" value="18:00" /></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Telegram Login</label><input type="text" id="empTelegramLogin" placeholder="telegram_login" /></div>
+                    <div class="form-group"><label>Telegram Parol</label><input type="password" id="empTelegramPass" placeholder="••••••••" /></div>
+                </div>
+                <div class="form-group"><label>Maosh</label><input type="number" id="empSalary" value="5000000" /></div>
+                <div class="form-group"><label>KPI maqsad (%)</label><input type="number" id="empKpi" value="100" min="0" max="100" /></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('employeeModal')">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2>Yangi Vazifa</h2><button class="close" onclick="closeModal('taskModal')">&times;</button></div>
+            <form id="taskForm" onsubmit="saveTask(event)">
+                <div class="form-group"><label>Xodim *</label><select id="taskEmployee" required></select></div>
+                <div class="form-group"><label>Sarlavha *</label><input type="text" id="taskTitle" required /></div>
+                <div class="form-group"><label>Tavsif</label><textarea id="taskDesc" rows="3"></textarea></div>
+                <div class="form-group"><label>Prioritet</label>
+                    <select id="taskPriority">
+                        <option value="low">Past</option>
+                        <option value="medium" selected>O'rta</option>
+                        <option value="high">Yuqori</option>
+                        <option value="urgent">Tez</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Muddati</label><input type="datetime-local" id="taskDeadline" /></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('taskModal')">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div class="modal" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2>Hisobot Detallari</h2><button class="close" onclick="closeModal('reportModal')">&times;</button></div>
+            <div id="reportDetail"></div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="approveReport()"><i class="fas fa-check"></i> Tasdiqlash</button>
+                <button class="btn btn-danger" onclick="rejectReport()"><i class="fas fa-times"></i> Rad etish</button>
+                <button class="btn btn-outline" onclick="closeModal('reportModal')">Yopish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div class="modal" id="supportModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2>Yangi Support Ticket</h2><button class="close" onclick="closeModal('supportModal')">&times;</button></div>
+            <form id="supportForm" onsubmit="saveSupport(event)">
+                <div class="form-group"><label>Sarlavha *</label><input type="text" id="supportTitle" required /></div>
+                <div class="form-group"><label>Tavsif *</label><textarea id="supportDesc" rows="4" required></textarea></div>
+                <div class="form-group"><label>Kategoriya</label>
+                    <select id="supportCategory">
+                        <option value="technical">Texnik</option>
+                        <option value="financial">Moliyaviy</option>
+                        <option value="hr">HR</option>
+                        <option value="other">Boshqa</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('supportModal')">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Yuborish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="notif-container" id="notifContainer"></div>
+
+    <script src="static/js/app.js"></script>
+
+</body>
+</html>
